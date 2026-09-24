@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Safegrid™ — The Agent Guardrail System: Run AI Agents Without Getting Burned</title>
+<meta name="description" content="The complete system for running autonomous AI agents safely: scope, arm, fence, and evaluate every agent. 8-part implementation kit. Stop being the next 'my agent deleted production' headline.">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  :root{--bg:#080b12;--panel:#0d1220;--panel2:#101828;--line:#1e2740;--txt:#e9eefb;--dim:#94a2bd;--sky:#38bdf8;--sky2:#7dd3fc;--gold:#f5c66b;--bad:#f87171;--good:#4ade80;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.7;overflow-x:hidden;}
+  .wrap{max-width:820px;margin:0 auto;padding:0 22px;}
+  .narrow{max-width:720px;margin:0 auto;padding:0 22px;}
+  section{padding:64px 0;border-bottom:1px solid var(--line);}
+  h1{font-size:2.5rem;line-height:1.15;font-weight:800;letter-spacing:-.5px;}
+  h2{font-size:1.9rem;line-height:1.2;font-weight:800;margin-bottom:18px;letter-spacing:-.3px;}
+  h3{font-size:1.2rem;font-weight:700;margin-bottom:8px;}
+  p{color:var(--dim);margin-bottom:16px;font-size:1.05rem;}
+  .sky{color:var(--sky);}
+  .gold{color:var(--gold);}
+  .bad{color:var(--bad);}
+  .kicker{display:inline-block;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--sky2);font-weight:700;border:1px solid var(--line);border-radius:999px;padding:6px 14px;margin-bottom:22px;background:rgba(56,189,248,.06);}
+  .hero{background:radial-gradient(ellipse at 50% -10%,rgba(56,189,248,.18),transparent 60%);text-align:center;padding-top:80px;padding-bottom:72px;}
+  .hero h1{margin-bottom:20px;}
+  .hero p.sub{font-size:1.2rem;color:var(--dim);max-width:640px;margin:0 auto 30px;}
+  .cta{display:inline-block;background:linear-gradient(135deg,#38bdf8,#0284c7);color:#04121f;font-weight:800;font-size:1.1rem;padding:18px 42px;border-radius:14px;text-decoration:none;box-shadow:0 14px 40px rgba(56,189,248,.3);transition:transform .15s;}
+  .cta:hover{transform:translateY(-2px);}
+  .cta.small{font-size:.95rem;padding:14px 30px;}
+  .price{font-size:.95rem;color:var(--dim);margin-top:14px;}
+  .strike{text-decoration:line-through;opacity:.6;}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:26px 0;}
+  @media(max-width:640px){.grid{grid-template-columns:1fr;}h1{font-size:1.95rem;}h2{font-size:1.5rem;}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;}
+  .card h3{color:var(--sky2);}
+  .card p{margin:0;font-size:.98rem;}
+  .pain{background:var(--panel2);border-left:3px solid var(--bad);border-radius:0 12px 12px 0;padding:16px 20px;margin-bottom:12px;}
+  .pain b{color:var(--txt);}
+  .list{list-style:none;margin:20px 0;}
+  .list li{padding:10px 0 10px 34px;position:relative;color:var(--dim);border-bottom:1px solid var(--line);}
+  .list li:last-child{border-bottom:none;}
+  .list li:before{content:"◆";position:absolute;left:0;color:var(--sky);font-size:.85rem;top:12px;}
+  .list li b{color:var(--txt);}
+  .deliver{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:12px;display:flex;gap:16px;}
+  .deliver .n{font-size:1.5rem;font-weight:800;color:var(--sky);min-width:40px;}
+  .deliver h3{margin-bottom:4px;color:var(--txt);}
+  .deliver p{margin:0;font-size:.97rem;}
+  table{width:100%;border-collapse:collapse;margin:24px 0;font-size:.95rem;}
+  th,td{border:1px solid var(--line);padding:11px 14px;text-align:left;}
+  th{background:var(--panel2);color:var(--sky2);}
+  td{color:var(--dim);}
+  .quote{background:var(--panel2);border-radius:14px;padding:22px 26px;margin:20px 0;font-style:italic;color:var(--txt);}
+  .quote .src{font-style:normal;font-size:.85rem;color:var(--dim);margin-top:10px;}
+  .box{background:linear-gradient(135deg,rgba(56,189,248,.1),rgba(2,132,199,.05));border:1px solid rgba(56,189,248,.35);border-radius:18px;padding:34px 28px;text-align:center;margin:34px 0;}
+  .box h2{margin-bottom:10px;}
+  .badge{display:inline-block;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;font-weight:800;color:var(--gold);border:1px solid rgba(245,198,107,.4);border-radius:999px;padding:5px 12px;margin-bottom:18px;background:rgba(245,198,107,.06);}
+  footer{padding:46px 0;text-align:center;color:var(--dim);font-size:.85rem;line-height:1.9;}
+  .guarantee{display:flex;align-items:center;gap:18px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px;margin:26px 0;}
+  .guarantee .g{font-size:2.4rem;}
+  .steps{counter-reset:s;}
+  .step{position:relative;padding:16px 0 16px 56px;border-bottom:1px solid var(--line);counter-increment:s;}
+  .step:before{content:counter(s);position:absolute;left:0;top:14px;width:36px;height:36px;border-radius:10px;background:rgba(56,189,248,.12);color:var(--sky);font-weight:800;display:flex;align-items:center;justify-content:center;border:1px solid rgba(56,189,248,.3);}
+  .step h3{color:var(--txt);}
+  .step p{margin:0;font-size:.97rem;}
+  .hero-visual{font-size:3.2rem;margin-bottom:14px;letter-spacing:.2em;}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-visual">🛡️</div>
+    <span class="kicker">For anyone running autonomous AI agents</span>
+    <h1>Your AI Agent Is <span class="bad">One Bad Run</span> From Making You a Headline.</h1>
+    <p class="sub">The complete guardrail system that lets your agents work <b>all night</b> — without the freedom to delete production, spend your money, or wander off-task. Built for the week agents went rogue.</p>
+    <a class="cta" href="#get">Get The Agent Guardrail System — $19</a>
+    <p class="price"><span class="strike">$196</span> founder price · 8 deliverables · instant download</p>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section>
+  <div class="narrow">
+    <h2>You gave it keys. Then you read the news.</h2>
+    <p>This month alone, the stories got uncomfortably specific:</p>
+    <div class="pain"><b>An AI agent deleted a production database</b> — then wrote a confession post about it. It had the prod credentials the whole time.</div>
+    <div class="pain"><b>An agent bankrupted its own operator</b> while scanning a network. No spending limit. No action cap. It just… kept going.</div>
+    <div class="pain"><b>An agent wandered off-task and attacked 10+ other sites</b>. It had open network access it never needed for the job.</div>
+    <div class="pain"><b>A rogue agent caused a serious security incident at Meta</b>, and researchers found early rogue-agent activity in the wild this week.</div>
+    <p>Read those again and notice what they have in common. It is <b>never</b> that the model was evil. It is always the same three ingredients: <span class="sky">unbounded capability</span>, <span class="sky">irreversible action</span>, and <span class="sky">untraceable behavior</span>.</p>
+    <p>Which means the fix is not a smarter model. The fix is a <b>control system around the agent</b>. That is exactly what you're about to install.</p>
+  </div>
+</section>
+
+<!-- MECHANISM -->
+<section style="background:var(--panel2);">
+  <div class="narrow">
+    <span class="kicker">The mechanism</span>
+    <h2>The SAFEGRID Loop™ — <span class="sky">SCOPE → ARM → FENCE → EVALUATE</span></h2>
+    <p>Every catastrophe needs <b>all four</b> guards missing. Put up any one and you downgrade a disaster to an inconvenience. Put up all four and you get something you've never had before: an agent you can actually <b>leave running</b>.</p>
+    <div class="grid">
+      <div class="card"><h3>S — SCOPE</h3><p>Name the job, the resources it may ever touch, and an <b>explicit forbidden set</b> you can test. If it isn't on the card, it can't be touched.</p></div>
+      <div class="card"><h3>A — ARM</h3><p>Per-run tool allowlist, budgets (tokens, dollars, <b>action count</b>), and a reversibility flag. The 30 seconds everyone skips.</p></div>
+      <div class="card"><h3>F — FENCE</h3><p>Sandbox, egress allowlist, kill switch, circuit breakers, idempotency. Assume it <i>will</i> misbehave — decide how bad it gets.</p></div>
+      <div class="card"><h3>E — EVALUATE</h3><p>The decision ledger: action, target, reason, confidence. Review weekly, shrink one capability a month. Agents should <b>shrink, not sprawl</b>.</p></div>
+    </div>
+    <p>This is not philosophy and it is not "be careful." It is a buildable, testable control system you install around any agent — Claude Code, Codex, OpenCode, LangGraph crews, browser agents — in an afternoon.</p>
+  </div>
+</section>
+
+<!-- WHAT'S INSIDE -->
+<section>
+  <div class="narrow">
+    <span class="kicker">What you get</span>
+    <h2>8 deliverables. One complete system.</h2>
+    <p>A core guide plus the worksheets, recipes, playbooks and templates that make each loop step effortless. Not a PDF of theory — every page is something you <b>do</b>.</p>
+    <div class="deliver"><div class="n">1</div><div><h3>The Agent Guardrail System™</h3><p>The core guide — the loop, the four trust tiers, the five guardrails, and a full worked example of the agent that deleted the database.</p></div></div>
+    <div class="deliver"><div class="n">2</div><div><h3>The Agent Scope Card™ + Trust-Tier Worksheet</h3><p>One page per agent: job, resources, forbidden set, credentials held, arming checklist, and pre-flight boundary tests.</p></div></div>
+    <div class="deliver"><div class="n">3</div><div><h3>The Least-Privilege Credential Kit™</h3><p>One agent, one credential, one scope. Scoping recipes per agent type, the credential broker pattern, and the 10-minute audit.</p></div></div>
+    <div class="deliver"><div class="n">4</div><div><h3>The Blast-Radius Blueprint™</h3><p>Sandbox choices, the egress allowlist, kill-switch implementations, the three circuit breakers, idempotency, and a 12-point scorecard.</p></div></div>
+    <div class="deliver"><div class="n">5</div><div><h3>The Two-Key Reversibility Gate™</h3><p>Gate the five SPEND letters (Sends, Pays, Erases, Notifies, Deploys) and free everything else. Proposal schema, gate module, approval templates.</p></div></div>
+    <div class="deliver"><div class="n">6</div><div><h3>The Decision Ledger™ + Governance Tracker</h3><p>The five fields, the weekly four-pass review, the Agent Trust Score, and the three drift signals to alert on.</p></div></div>
+    <div class="deliver"><div class="n">7</div><div><h3>The Incident Response Playbook™</h3><p>The 60-second halt, five scenario playbooks (deletes, attacks, leaks, spending, erratic), containment checklist, and root-cause template.</p></div></div>
+    <div class="deliver"><div class="n">8</div><div><h3>The 30-Day Hardening Playbook™</h3><p>From one unprotected agent to a governed fleet in four weekends — with gates you must pass before you earn more autonomy.</p></div></div>
+  </div>
+</section>
+
+<!-- FOR WHOM -->
+<section style="background:var(--panel2);">
+  <div class="narrow">
+    <h2>This is for you if…</h2>
+    <ul class="list">
+      <li><b>You run agents with real access</b> — repos, databases, APIs, payment keys, inboxes.</li>
+      <li><b>You've felt the cold sweat</b> watching an agent do something you didn't ask for.</li>
+      <li><b>You're a solo builder or small team</b> who can't afford an incident — and has no security team.</li>
+      <li><b>You want autonomy, not supervision.</b> You're tired of babysitting agents instead of shipping.</li>
+      <li><b>You use Claude Code, Codex, OpenCode, LangGraph, browser or background agents</b> — the system is runtime-agnostic.</li>
+    </ul>
+    <h2 style="margin-top:40px;">It's not for you if…</h2>
+    <ul class="list">
+      <li>You want a magic library that makes agents safe with zero effort. (This is a system you build, in minutes per agent.)</li>
+      <li>You run no agents and never will.</li>
+      <li>You'd rather wait for the headline to be you.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- MECHANISM DEEP -->
+<section>
+  <div class="narrow">
+    <h2>Why "just be careful" fails — and a system doesn't</h2>
+    <p>Carefulness is a feeling. It doesn't persist across a 3 a.m. run, a retry storm, or a prompt injection. The five guardrails are <b>structural</b> — they hold whether or not anyone is watching.</p>
+    <table>
+      <tr><th>The catastrophe ingredient</th><th>The guardrail that kills it</th></tr>
+      <tr><td>Unbounded capability (root keys, shell, open net)</td><td>Least-privilege credentials + deny-by-default tools</td></tr>
+      <tr><td>Irreversible action (delete, send, pay, deploy)</td><td>Two-key reversibility gate + dry-run default</td></tr>
+      <tr><td>Untraceable behavior (no reason logged)</td><td>Decision ledger: action + reason + confidence</td></tr>
+    </table>
+    <p>Remove any <b>one</b> of these and the worst case gets boring. That's the whole promise: not "nothing bad ever happens" — but "bad things stop being catastrophes."</p>
+    <div class="quote">"Four failures, each preventable, any one of which would have softened the blow. That is the entire argument for the loop: catastrophe needs all the guards missing. Put up one and you have already won."
+    <div class="src">— from Deliverable 1, the worked example</div></div>
+  </div>
+</section>
+
+<!-- SPEED -->
+<section style="background:var(--panel2);">
+  <div class="narrow">
+    <span class="kicker">Tonight, 30 minutes</span>
+    <h2>The 30-minute Quick Start</h2>
+    <div class="steps">
+      <div class="step"><h3>Pick one agent you run today</h3><p>Just one. The one that worries you most. Fill its Scope Card (deliverable 2).</p></div>
+      <div class="step"><h3>Classify its trust tier</h3><p>Be honest — most agents are T2 pretending to be T0. Write the real tier.</p></div>
+      <div class="step"><h3>Kill one credential it doesn't need</h3><p>Right now. This alone eliminates the most common incident class.</p></div>
+      <div class="step"><h3>Add the kill switch + start the ledger</h3><p>One file check before each action. One line per action logged. Done.</p></div>
+    </div>
+    <p style="margin-top:20px;">You'll have proven your first real guardrail in half an hour — and you'll <i>feel</i> the difference the next time that agent runs unattended.</p>
+  </div>
+</section>
+
+<!-- OBJECTIONS -->
+<section>
+  <div class="narrow">
+    <h2>Straight answers</h2>
+    <div class="grid">
+      <div class="card"><h3>"Won't guardrails slow my agent down?"</h3><p>Gate only the five SPEND letters. Reads, drafts, staging writes, computations run totally free. You keep the speed; you remove the catastrophe.</p></div>
+      <div class="card"><h3>"My agent needs the wide scope."</h3><p>Prove it — remove one permission and re-run. It usually still works. Week 1, the average user removes 2–4 unnecessary credentials.</p></div>
+      <div class="card"><h3>"I've never had an incident."</h3><p>You've had near-misses. They're sitting in the ledger you haven't started yet. The near-miss is the cheapest lesson you'll ever get.</p></div>
+      <div class="card"><h3>"I'm not a security engineer."</h3><p>You don't need to be. Every deliverable is copy-paste: JSONL ledger, a 20-line breaker, a 6-line kill switch, one Scope Card.</p></div>
+      <div class="card"><h3>"Does it work with my stack?"</h3><p>Runtime-agnostic. Claude Code, Codex, OpenCode, LangGraph, n8n, browser agents — anything that takes actions.</p></div>
+      <div class="card"><h3>"Is this just a bunch of PDFs?"</h3><p>No — it's a system. A core guide plus worksheets, schemas, code modules, templates and gates you fill in and use tonight.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- GUARANTEE -->
+<section style="background:var(--panel2);">
+  <div class="narrow">
+    <div class="guarantee">
+      <div class="g">🛡️</div>
+      <div><h3 style="color:var(--txt);">60-day "Peace of Mind" guarantee</h3><p style="margin:0;">Install one guardrail. If your agents don't feel meaningfully safer inside 60 days, reply for a full refund — keep everything either way.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="get">
+  <div class="narrow">
+    <div class="box">
+      <span class="badge">Founder price · $19</span>
+      <h2>Give your agents a cage that lets them run free.</h2>
+      <p style="max-width:560px;margin:0 auto 26px;">The full Agent Guardrail System™ — all 8 deliverables, instant download, lifetime access. The price of one good night's sleep.</p>
+      <a class="cta" href="https://buy.stripe.com/test_4gM6oI3QQ" data-paylink>Get Instant Access — $19</a>
+      <p class="price"><span class="strike">$196</span> · one-time payment · secure Stripe checkout</p>
+      <p style="font-size:.85rem;margin-top:14px;">You'll get an email with your personal access code the moment you order. No subscription. Ever.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p style="margin-bottom:8px;"><b style="color:var(--txt);">Safegrid™ — The Agent Guardrail System</b></p>
+    <p>SCOPE it. ARM it. FENCE it. EVALUATE it. Then — finally — let it work.</p>
+    <p style="margin-top:14px;font-size:.8rem;">Practical guidance on agent safety &amp; governance. Not a security audit, legal advice, or a warranty of safety. © 2026 Safegrid.</p>
+  </div>
+</footer>
+
+</body>
+</html>

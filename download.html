@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Safegrid™ — Your Downloads</title>
+<style>
+  :root { --bg:#0a0c10; --panel:#121722; --line:#243044; --txt:#e9eef7; --dim:#8f9cb5; --accent:#38bdf8; --good:#38bdf8; --bad:#f87171; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--txt); font-family:'Segoe UI',system-ui,sans-serif; min-height:100vh; }
+  .wrap { max-width:800px; margin:0 auto; padding:40px 20px 80px; }
+  .logo { font-size:22px; font-weight:700; margin-bottom:6px; }
+  .logo span { color:var(--accent); }
+  .sub { color:var(--dim); font-size:14px; margin-bottom:32px; }
+  .gate { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:28px; margin-bottom:28px; }
+  .gate h2 { font-size:18px; margin-bottom:8px; }
+  .gate p { color:var(--dim); font-size:13px; margin-bottom:18px; }
+  input { width:100%; background:var(--bg); border:1px solid var(--line); color:var(--txt); padding:12px 14px; border-radius:8px; font-size:15px; margin-bottom:12px; }
+  .btn { background:var(--accent); color:#04121f; border:none; padding:12px 20px; border-radius:8px; font-weight:700; font-size:14px; cursor:pointer; width:100%; }
+  .btn:hover { filter:brightness(1.1); }
+  .err { color:var(--bad); font-size:13px; margin-top:10px; min-height:18px; }
+  .locked { display:none; }
+  .files { display:grid; gap:12px; }
+  .file { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px 18px; display:flex; align-items:center; justify-content:space-between; gap:14px; }
+  .file h3 { font-size:15px; margin-bottom:3px; }
+  .file p { color:var(--dim); font-size:12.5px; line-height:1.45; }
+  .file .btn { width:auto; padding:9px 16px; font-size:12.5px; flex-shrink:0; }
+  .badge { display:inline-block; background:rgba(74,222,128,0.12); color:var(--good); font-size:11px; padding:2px 10px; border-radius:12px; font-weight:600; margin-bottom:6px; }
+  footer { margin-top:40px; text-align:center; color:var(--dim); font-size:12px; }
+  .start { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:20px; margin-bottom:16px; }
+  .start h3 { font-size:16px; margin-bottom:8px; }
+  .start ol { padding-left:20px; color:var(--dim); font-size:13.5px; line-height:1.9; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">🛡️ Safe<span>grid</span>™</div>
+  <div class="sub">The Agent Guardrail System™ — your member downloads</div>
+
+  <div id="gateBox" class="gate">
+    <h2>🔐 Unlock your downloads</h2>
+    <p>Enter the email you purchased with and your personal access code (sent in your order confirmation email).</p>
+    <input id="email" type="email" placeholder="you@email.com" autocomplete="email">
+    <input id="code" type="text" placeholder="SG-XXXXX-XXXXX" autocomplete="off">
+    <button class="btn" onclick="unlock()">Unlock →</button>
+    <div class="err" id="err"></div>
+  </div>
+
+  <div id="memberArea" class="locked">
+    <div class="start">
+      <span class="badge">✅ Unlocked</span>
+      <h3>Start here — the SCOPE→ARM→FENCE→EVALUATE loop</h3>
+      <ol>
+        <li><b>SCOPE:</b> fill a Scope Card for ONE live agent — job, resources, forbidden set (deliverable 2)</li>
+        <li><b>ARM + FENCE:</b> allowlist the tools, install a kill switch, add a circuit breaker (deliverable 4)</li>
+        <li><b>EVALUATE:</b> start the decision ledger, review it weekly, shrink one capability a month (deliverable 6)</li>
+      </ol>
+    <div class="files">
+      <div class="file">
+        <div><h3>📘 1. The Agent Guardrail System™</h3><p>The core guide — the SCOPE→ARM→FENCE→EVALUATE loop, the four ingredients of catastrophe, and the trust tiers. Start here.</p></div>
+        <button class="btn" onclick="dl('01-agent-guardrail-system.pdf', this)">Download</button>
+      </div>
+      <div class="file">
+        <div><h3>🗂️ 2. The Agent Scope Card™ + Trust-Tier Worksheet</h3><p>One page per agent: job, resources it may touch, an explicit forbidden set, tier + arming checklist.</p></div>
+        <button class="btn" onclick="dl('02-scope-card-worksheet.pdf', this)">Download</button>
+      </div>
+      <div class="file">
+        <div><h3>🔑 3. The Least-Privilege Credential Kit™</h3><p>One agent, one credential, one scope. Scoping recipes, the credential broker, and the 10-minute audit.</p></div>
+        <button class="btn" onclick="dl('03-least-privilege-credential-kit.pdf', this)">Download</button>
+      </div>
+      <div class="file">
+        <div><h3>💣 4. The Blast-Radius Blueprint™</h3><p>Sandbox, egress allowlist, kill switch, circuit breakers, idempotency, and the 12-point scorecard.</p></div>
+        <button class="btn" onclick="dl('04-blast-radius-blueprint.pdf', this)">Download</button>
+      </div>
+      <div class="file">
+        <div><h3>🔐 5. The Two-Key Reversibility Gate™</h3><p>Gate the five SPEND letters, free everything else. Proposal schema, gate module, and approval templates.</p></div>
+        <button class="btn" onclick="dl('05-two-key-reversibility-gate.pdf', this)">Download</button>
+      </div>
+      <div class="file">
+        <div><h3>📊 6. The Decision Ledger™ + Governance Tracker</h3><p>The five fields, the weekly review, the Agent Trust Score, and the three drift signals to alert on.</p></div>
+        <button class="btn" onclick="dl('06-decision-ledger-governance.pdf', this)">Download</button>
+      </div>
+      <div class="file">
+        <div><h3>🚨 7. The Incident Response Playbook™</h3><p>The 60-second halt, five scenario playbooks, containment checklist, drills, and the root-cause template.</p></div>
+        <button class="btn" onclick="dl('07-incident-response-playbook.pdf', this)">Download</button>
+      </div>
+      <div class="file">
+        <div><h3>🚀 8. The 30-Day Hardening Playbook™</h3><p>From one unprotected agent to a governed fleet in four weekends — with gates you must pass.</p></div>
+        <button class="btn" onclick="dl('08-30-day-hardening-playbook.pdf', this)">Download</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>Safegrid™ · practical guidance on agent safety &amp; governance · not legal or security-audit advice</footer>
+</div>
+
+<script>
+function unlock() {
+  const email = document.getElementById('email').value.trim();
+  const code = document.getElementById('code').value.trim();
+  const err = document.getElementById('err');
+  if (!email || !code) { err.textContent = 'Please enter both email and access code.'; return; }
+  fetch('/api/verify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, code }) })
+    .then(r => r.json())
+    .then(d => {
+      if (d.ok) {
+        sessionStorage.setItem('sg_email', email);
+        sessionStorage.setItem('sg_code', code);
+        document.getElementById('gateBox').style.display = 'none';
+        document.getElementById('memberArea').classList.remove('locked');
+        document.getElementById('memberArea').style.display = 'block';
+        err.textContent = '';
+      } else {
+        err.textContent = d.error || 'Access denied. Check your code and email.';
+      }
+    })
+    .catch(() => { err.textContent = 'Network error — try again.'; });
+}
+
+function dl(file, btn) {
+  const email = sessionStorage.getItem('sg_email');
+  const code = sessionStorage.getItem('sg_code');
+  if (!email || !code) { alert('Session expired — please unlock again.'); location.reload(); return; }
+  const orig = btn.textContent;
+  btn.textContent = '⏳ …';
+  btn.disabled = true;
+  fetch('/api/download', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, code, file }) })
+    .then(async r => {
+      if (!r.ok) { const d = await r.json().catch(() => ({})); throw new Error(d.error || 'Download failed (' + r.status + ')'); }
+      const blob = await r.blob();
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = file;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      btn.textContent = '✅ Sent';
+    })
+    .catch(e => { alert(e.message); btn.textContent = orig; })
+    .finally(() => { btn.disabled = false; setTimeout(() => { if (btn.textContent === '✅ Sent') btn.textContent = orig; }, 2500); });
+}
+
+// auto-unlock if already verified this session
+const em = sessionStorage.getItem('sg_email');
+const ec = sessionStorage.getItem('sg_code');
+if (em && ec) {
+  fetch('/api/verify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: em, code: ec }) })
+    .then(r => r.json())
+    .then(d => { if (d.ok) { document.getElementById('gateBox').style.display = 'none'; document.getElementById('memberArea').classList.remove('locked'); document.getElementById('memberArea').style.display = 'block'; } });
+}
+document.getElementById('code').addEventListener('keydown', (e) => { if (e.key === 'Enter') unlock(); });
+</script>
+</body>
+</html>
